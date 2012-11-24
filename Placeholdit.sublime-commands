@@ -1,0 +1,10 @@
+[
+    {
+        "caption": "Placehold.it: Insert Image",
+        "command": "insert_image"
+    },
+    {
+        "caption": "Placehold.it: Insert Custom Image",
+        "command": "insert_custom_image"
+    }
+]
