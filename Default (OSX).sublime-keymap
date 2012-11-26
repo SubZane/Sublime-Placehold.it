@@ -1,0 +1,4 @@
+[
+	{ "keys": ["super+p", "super+i"], "command": "insert_image" },
+	{ "keys": ["super+p", "super+c"], "command": "insert_custom_image" }	
+]

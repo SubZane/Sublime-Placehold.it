@@ -1,0 +1,4 @@
+[
+	{ "keys": ["ctrl+p", "ctrl+i"], "command": "insert_image" },
+	{ "keys": ["ctrl+p", "ctrl+c"], "command": "insert_custom_image" }	
+]
