@@ -25,5 +25,10 @@ Go to your Sublime Text 2 Packages directory and clone the repository using the 
 * Unzip the files and rename the folder to `Placehold.it Image Tag Generator`
 * Copy the folder to your Sublime Text 2 `Packages` directory
 
+## How to use
+* Launch the Command Palette using the menu (Tools->Command Palette...) or short key-command Shift+Cmd+P
+* Find Placehold.it Insert Image (for default sized image)
+* Find Placehold.it Insert Custom Image (to set your own size of the image)
+
 ##Todo's
 * Add support to download and store dummy image localy
