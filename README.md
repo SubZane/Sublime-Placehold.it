@@ -31,8 +31,7 @@ Go to your Sublime Text 2 Packages directory and clone the repository using the 
 * Find Placehold.it Insert Custom Image (to set your own size of the image)
 
 ### Using key-commands
-* Cmd/Ctrl + p, Cmd/Ctrl + i (to insert default sized image)
-* Cmd/Ctrl + p, Cmd/Ctrl + c (to set your own size of the image)
+* p, h, tab (to insert image)
 
 ##Todo's
 * Add support to download and store dummy image localy

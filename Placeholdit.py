@@ -31,15 +31,18 @@ def insert_image(size):
     view.end_edit(edit) 
 
 class InsertImageCommand(sublime_plugin.TextCommand):
-    global SIZE
-    def run(self, edit):
-        insert_image(SIZE)
-
-class InsertCustomImageCommand(sublime_plugin.TextCommand):
     global BGCOLOR, TEXTCOLOR, SIZE, FORMAT, TEXT
     def run(self, edit):
-        sublime.active_window().show_input_panel("Set Size:", "600x400", self.on_done, None, None)
-        pass
+        seloptions = []
+        seloptions.append("Insert Default Image ({0})".format(SIZE))
+        seloptions.append("Insert Custom Sized Image")
+        def on_enter(num):
+            if num == 0:
+                insert_image(SIZE)
+            elif num == 1:
+                sublime.active_window().show_input_panel("Set Size:", "600x400", self.on_size, None, None)
 
-    def on_done(self, text):
-        insert_image(text)
+        def on_size(self, setsize):
+            insert_image(setsize)
+
+        sublime.active_window().show_quick_panel(seloptions, on_enter)

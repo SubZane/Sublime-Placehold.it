@@ -3,5 +3,6 @@
     "ph_textcolor": "ffffff",
     "ph_size": "600x400",
     "ph_format": ".png",
-    "ph_text": ""
+    "ph_text": "",
+    "render_dimensions": 0
 }
