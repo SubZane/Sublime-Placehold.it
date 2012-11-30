@@ -40,7 +40,7 @@ class InsertImageCommand(sublime_plugin.TextCommand):
             if num == 0:
                 insert_image(SIZE)
             elif num == 1:
-                sublime.active_window().show_input_panel("Set Size:", "600x400", self.on_size, None, None)
+                sublime.active_window().show_input_panel("Set Size:", "600x400", on_size, None, None)
 
         def on_size(self, setsize):
             insert_image(setsize)
