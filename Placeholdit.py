@@ -36,13 +36,14 @@ class InsertImageCommand(sublime_plugin.TextCommand):
         seloptions = []
         seloptions.append("Insert Default Image ({0})".format(SIZE))
         seloptions.append("Insert Custom Sized Image")
+
         def on_enter(num):
             if num == 0:
                 insert_image(SIZE)
             elif num == 1:
-                sublime.active_window().show_input_panel("Set Size:", "600x400", self.on_size, None, None)
+                sublime.active_window().show_input_panel("Set Size:", "600x400", on_size, None, None)
 
-        def on_size(self, setsize):
+        def on_size(setsize):
             insert_image(setsize)
 
         sublime.active_window().show_quick_panel(seloptions, on_enter)
