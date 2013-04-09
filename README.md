@@ -1,4 +1,4 @@
-Sublime-Placehold.it 1.1
+Sublime-Placehold.it 1.2
 =============================
 
 Placehold.it plugin for Sublime Text 2
@@ -9,6 +9,14 @@ A plugin using the features of [Placehold.it](http://placehold.it)
 * Can insert any sized image tag with dummy image
 * Can browse and insert locally stored placeholder.it images
 * Text, Colors and Size can all be configured in the settings
+
+## Changelog
+### Version 1.2
+* Fixed bug where plugin crashed if failed to store image locally.
+* Plugin will echo informative error messages in console when failing to access or store images locally
+* When failing to store images locally, plugin will fall back to URL.
+* New setting `ph_save_local`. 0 = Do not save locally. 1 = Save locally.
+* The document you're working with must exist. Meaning, it need to have a file name.
 
 ## Changelog
 ### Version 1.1
@@ -53,7 +61,7 @@ Find the settings file in the menu: Sublime Text2 ~> Preferences ~> Package Sett
 * `ph_default_sizes` List of image sizes to insert
 * `ph_format` File format. You can use .png, .gif or .jpg
 * `ph_text` The text on the dummy image. Default is the size of the image
-* `ph_localimages` True/False if you want to save the dummy images locally
+* `ph_save_local` 1/0 if you want to save the dummy images locally
 * `ph_imagepath` The path for your image folder in your web project. This is where the dummy images is stored
 
 ### Using key-commands

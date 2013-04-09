@@ -18,9 +18,6 @@ if DEFAULT_SIZES == None:
 IMAGEPATH = SETTINGS.get('ph_imagepath')
 if IMAGEPATH == None:
     IMAGEPATH = "images/"
-SAVELOCAL = SETTINGS.get('ph_localimages')
-if SAVELOCAL == None:
-    SAVELOCAL = False
 TEXTCOLOR = SETTINGS.get('ph_textcolor')
 if TEXTCOLOR == None:
     TEXTCOLOR = "ffffff"
@@ -33,6 +30,12 @@ if FORMAT == None:
 TEXT = SETTINGS.get('ph_text')
 if TEXT == None:
     TEXT = ""
+SAVELOCAL = SETTINGS.get('ph_save_local')
+if SAVELOCAL == 0:
+    SAVELOCAL = False
+else:
+    SAVELOCAL = True
+
 
 def load_default_sizes():
     global DEFAULT_SIZES
@@ -43,6 +46,9 @@ def load_default_sizes():
 def get_current_path():
     view = sublime.Window.active_view(sublime.active_window())
     current_file = view.file_name()
+    if current_file == None:
+        print "Placehold.it Error: You cannot use this on a non existing document. Document need a file name."
+        return False
     index = current_file.rfind('/')
     current_dir = current_file[:index]
     return current_dir
@@ -54,14 +60,20 @@ def insert_image(size):
     else:
         imageurl = 'http://placehold.it/{0}/{1}/{2}{3}&text={4}'.format(size, BGCOLOR, TEXTCOLOR, FORMAT, TEXT)
 
-    if SAVELOCAL:
+    if SAVELOCAL == True:
         file_name = "placehold-{0}-{1}-{2}{3}".format(size, BGCOLOR, TEXTCOLOR, FORMAT)
         path = get_current_path()
+        if path == False:
+            return False
         imagefile = urllib2.urlopen(imageurl)
-        localFile = open(path+"/"+IMAGEPATH+file_name, 'w+')
-        localFile.write(imagefile.read())
-        localFile.close()
-        insert_image_tag(IMAGEPATH+file_name)
+        try:
+            localFile = open(path+"/"+IMAGEPATH+file_name, 'w+')
+            localFile.write(imagefile.read())
+            localFile.close()
+            insert_image_tag(IMAGEPATH+file_name)
+        except Exception, e:
+            print "Placehold.it Error: Folder not found. Unable to save image. Falling back to URL."
+            insert_image_tag(imageurl)
     else:
         insert_image_tag(imageurl)
 

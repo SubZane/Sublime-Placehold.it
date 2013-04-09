@@ -5,6 +5,6 @@
     "ph_default_sizes": "600x400, 200x200, 800x600, 100x100",
     "ph_format": ".png",
     "ph_text": "",
-    "ph_localimages": true,
-    "ph_imagepath": "images/"
+    "ph_imagepath": "images/",
+    "ph_save_local": 0
 }
