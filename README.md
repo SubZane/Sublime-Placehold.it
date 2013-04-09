@@ -18,7 +18,6 @@ A plugin using the features of [Placehold.it](http://placehold.it)
 * New setting `ph_save_local`. 0 = Do not save locally. 1 = Save locally.
 * The document you're working with must exist. Meaning, it need to have a file name.
 
-## Changelog
 ### Version 1.1
 * Can now store dummy images locally
 * Can browse locally stored images
