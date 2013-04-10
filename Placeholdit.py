@@ -10,25 +10,25 @@ import sublime, sublime_plugin, urllib2, json, os, re
 
 SETTINGS = sublime.load_settings("Placeholdit.sublime-settings")
 BGCOLOR = SETTINGS.get('ph_bgcolor')
-if BGCOLOR == None:
+if (BGCOLOR == ""):
     BGCOLOR = "0eafff"
 DEFAULT_SIZES = SETTINGS.get('ph_default_sizes')
-if DEFAULT_SIZES == None:
+if (DEFAULT_SIZES == ""):
     DEFAULT_SIZES = "600x400, 200x200, 800x600, 100x100"
 IMAGEPATH = SETTINGS.get('ph_imagepath')
-if IMAGEPATH == None:
+if (IMAGEPATH == ""):
     IMAGEPATH = "images/"
 TEXTCOLOR = SETTINGS.get('ph_textcolor')
-if TEXTCOLOR == None:
+if (TEXTCOLOR == ""):
     TEXTCOLOR = "ffffff"
 SIZE = SETTINGS.get('ph_size')
-if SIZE == None:
+if (SIZE == ""):
     SIZE = "600x400"
 FORMAT = SETTINGS.get('ph_format')
-if FORMAT == None:
+if (FORMAT == ""):
     FORMAT = ".png"
 TEXT = SETTINGS.get('ph_text')
-if TEXT == None:
+if (TEXT == ""):
     TEXT = ""
 SAVELOCAL = SETTINGS.get('ph_save_local')
 if SAVELOCAL == 0:
@@ -36,6 +36,9 @@ if SAVELOCAL == 0:
 else:
     SAVELOCAL = True
 
+
+def IsNull(value):
+    return 
 
 def load_default_sizes():
     global DEFAULT_SIZES
@@ -47,7 +50,7 @@ def get_current_path():
     view = sublime.Window.active_view(sublime.active_window())
     current_file = view.file_name()
     if current_file == None:
-        print "Placehold.it Error: You cannot use this on a non existing document. Document need a file name."
+        sublime.error_message("Placehold.it Error: You cannot use this on a non existing document. Document need a file name.")
         return False
     index = current_file.rfind('/')
     current_dir = current_file[:index]
@@ -95,7 +98,6 @@ def insert_image_tag(selected_image):
 def insert_cached_images():
     global IMAGEPATH, FORMAT
     current_dir = get_current_path()
-
     imagefiles = [os.path.join(root, name)
         for root, dirs, files in os.walk(current_dir+"/"+IMAGEPATH)
             for name in files
