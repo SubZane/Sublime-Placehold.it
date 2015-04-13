@@ -17,7 +17,7 @@
                         [
                             {
                                 "command": "open_file",
-                                "args": {"file": "${packages}/Placehold.it Image Tag Generator/Placeholdit.sublime-settings"},
+                                "args": {"file": "${packages}/Sublime-Placehold/Placeholdit.sublime-settings"},
                                 "caption": "Settings"
                             }
                         ]
