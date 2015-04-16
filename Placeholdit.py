@@ -6,7 +6,7 @@
 #   https://github.com/SubZane/Sublime-Placehold.it
 #
 #   ------------------------------------------------------------
-import sublime, sublime_plugin, json, os, re
+import sublime, sublime_plugin, json, os, re, threading
 from urllib.request import urlopen
 
 SETTINGS = None
@@ -19,9 +19,11 @@ FORMAT = None
 TEXT = None
 SAVELOCAL = None
 REGION = None
+PATH = None
 
 def loadVariables():
-    global SETTINGS, BGCOLOR, DEFAULT_SIZES, IMAGEPATH,TEXTCOLOR, SIZE, FORMAT, TEXT, SAVELOCAL,REGION
+    global SETTINGS, BGCOLOR, DEFAULT_SIZES, IMAGEPATH,TEXTCOLOR, SIZE, FORMAT, TEXT, SAVELOCAL,REGION,PATH
+    PATH = get_current_path()
     SETTINGS = sublime.load_settings("Placeholdit.sublime-settings")
     BGCOLOR = SETTINGS.get('ph_bgcolor')
     if (BGCOLOR == ""):
@@ -52,7 +54,7 @@ def loadVariables():
 
 
 def IsNull(value):
-    return 
+    return
 
 def load_default_sizes():
     global DEFAULT_SIZES
@@ -76,27 +78,30 @@ def insert_image(size):
         imageurl = 'http://placehold.it/{0}/{1}/{2}{3}'.format(size, BGCOLOR, TEXTCOLOR, FORMAT, size)
     else:
         imageurl = 'http://placehold.it/{0}/{1}/{2}{3}&text={4}'.format(size, BGCOLOR, TEXTCOLOR, FORMAT, TEXT)
-
     if SAVELOCAL == True:
-        file_name = "placehold-{0}-{1}-{2}{3}".format(size, BGCOLOR, TEXTCOLOR, FORMAT)
-        path = get_current_path()
-        if path == False:
-            return False
-        imagefile = urlopen(imageurl)
-        try:
-            path_images = path+"/"+IMAGEPATH
-            if not os.path.exists(path_images):
-                os.makedirs(path_images)
-            localFile = open(path_images+file_name, 'w+')
-            localFile.write(imagefile.read())
-            localFile.close()
-            insert_image_tag(IMAGEPATH+file_name)
-        except Exception:
-            print("Placehold.it Error: Folder not found. Unable to save image. Falling back to URL.")
-
-            insert_image_tag(imageurl)
+    	t = threading.Thread(target=save_local, args=(imageurl,size))
+    	t.start()
     else:
         insert_image_tag(imageurl)
+
+def save_local(imageurl,size):
+	global PATH, IMAGEPATH,BGCOLOR, TEXTCOLOR, FORMAT
+	file_name = "placehold-{0}-{1}-{2}{3}".format(size, BGCOLOR, TEXTCOLOR, FORMAT)
+	insert_image_tag(IMAGEPATH+file_name)
+
+
+	try:
+		imagefile = urlopen(imageurl)
+		path_images = PATH+"/"+IMAGEPATH
+		if not os.path.exists(path_images):
+			os.makedirs(path_images)
+		if not os.path.isfile(path_images+file_name):
+			localFile = open(path_images+file_name, 'wb+')
+			localFile.write(imagefile.read())
+			localFile.close()
+	except Exception:
+		print(path_images+file_name)
+		print("Placehold.it Error: Folder not found. Unable to save image. Falling back to URL.")
 
 def insert_custom_size():
     all_sizes = load_default_sizes()
@@ -118,14 +123,13 @@ def insert_image_tag(selected_image):
     view.run_command("replace", {'imagetag':imagetag})
 
 def insert_cached_images():
-    global IMAGEPATH, FORMAT
-    current_dir = get_current_path()
+    global IMAGEPATH, FORMAT, PATH
     imagefiles = [os.path.join(root, name)
-        for root, dirs, files in os.walk(current_dir+"/"+IMAGEPATH)
+        for root, dirs, files in os.walk(PATH+"/"+IMAGEPATH)
             for name in files
                 if name.startswith("placehold") and name.endswith(FORMAT)]
 
-    imagefiles = [w.replace(current_dir+"/", '') for w in imagefiles]
+    imagefiles = [w.replace(PATH+"/", '') for w in imagefiles]
 
     def on_enter(selected_image):
         if selected_image != -1:
