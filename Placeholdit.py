@@ -68,7 +68,7 @@ def get_current_path():
     if current_file == None:
         sublime.error_message("Placehold.it Error: You cannot use this on a non existing document. Document need a file name.")
         return False
-    index = current_file.rfind('/')
+    index = current_file.rfind(os.path.sep)
     current_dir = current_file[:index]
     return current_dir
 
@@ -92,7 +92,7 @@ def save_local(imageurl,size):
 
 	try:
 		imagefile = urlopen(imageurl)
-		path_images = PATH+"/"+IMAGEPATH
+		path_images = PATH + os.path.sep + IMAGEPATH
 		if not os.path.exists(path_images):
 			os.makedirs(path_images)
 		if not os.path.isfile(path_images+file_name):
@@ -125,11 +125,11 @@ def insert_image_tag(selected_image):
 def insert_cached_images():
     global IMAGEPATH, FORMAT, PATH
     imagefiles = [os.path.join(root, name)
-        for root, dirs, files in os.walk(PATH+"/"+IMAGEPATH)
+        for root, dirs, files in os.walk(PATH + os.path.sep + IMAGEPATH)
             for name in files
                 if name.startswith("placehold") and name.endswith(FORMAT)]
 
-    imagefiles = [w.replace(PATH+"/", '') for w in imagefiles]
+    imagefiles = [w.replace(PATH + os.path.sep, '') for w in imagefiles]
 
     def on_enter(selected_image):
         if selected_image != -1:
